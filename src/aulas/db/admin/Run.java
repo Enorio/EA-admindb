@@ -37,7 +37,7 @@ public class Run implements Runnable {
 
             Connection c = DriverManager.getConnection(
                     "jdbc:postgresql://localhost/Perez_25");
-
+            Populate p = new Populate(10000, 1024, 2048, "jdbc:postgresql://localhost/Perez_25");
             Statement s = c.createStatement();
 
             while (true) {
@@ -47,21 +47,26 @@ public class Run implements Runnable {
                 switch (0) {
 
                     case 0: //sell
-                        int cl0 = r.nextInt(Populate.MAXCLI) | r.nextInt(Populate.MAXCLI);
-                        int pl0 = r.nextInt(Populate.MAXPROD) | r.nextInt(Populate.MAXPROD);
+                        int cl0 = r.nextInt(p.getMaxcli()) | r.nextInt(p.getMaxcli());
+                        int pl0 = r.nextInt(p.getMaxprod()) | r.nextInt(p.getMaxprod());
+                        p.insertInvoice(p.getMax()+1, pl0, cl0);
+                        
+                        
                         break;
                     case 1: // current account
-                        int cl = r.nextInt(Populate.MAXCLI) | r.nextInt(Populate.MAXCLI);
+                        int cl = r.nextInt(p.getMaxcli()) | r.nextInt(p.getMaxcli());
                         ResultSet rs = s.executeQuery("select count(*) from invoice where cliid = " + cl);
-                        while (rs.next())
-					;
+                        while (rs.next()){
+                            
+                        }
+                           
                         rs.close();
                         break;
                     case 2: // top 10
                         ResultSet rs2 = s.executeQuery("select prodid,count(prodid) AS sells from invoice GROUP BY prodid ORDER BY sells DESC LIMIT 10");
-                                
+                        
                         while (rs2.next()) {
-                          ;
+                           
                         }
                         rs2.close();
                         break;
@@ -76,8 +81,8 @@ public class Run implements Runnable {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        for (int i = 0; i < 1; i++) {
+    public  void main(String[] args) throws Exception {
+        for (int i = 0; i < 8; i++) {
             new Thread(new Run()).start();
         }
 

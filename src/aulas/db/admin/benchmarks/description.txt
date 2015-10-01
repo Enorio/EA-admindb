@@ -1,0 +1,4 @@
+Benchamarks relativas ao run.java
+
+Começar com 2 threads e ir subindo o valor até atingir o débito máximo.
+Depois de tal é alterar o shared_buffer.

@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 public class Populate extends SQLException {
 
+    
     private final Connection c;
 
     private final int max;
